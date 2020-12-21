@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 自定义realm -->
+    <bean id="myRealm" class="com.hopu.shiro.MyRealm">
+<!--        <property name="credentialsMatcher">-->
+<!--                  <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+<!--                    <property name="hashAlgorithmName" value="MD5"></property>-->
+<!--            &lt;!&ndash; 加密算法的名称 &ndash;&gt;-->
+<!--                    <property name="hashIterations" value="1024"></property>-->
+<!--            &lt;!&ndash; 配置加密的次数 &ndash;&gt;-->
+<!--                  </bean>-->
+<!--        </property>-->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="1024"></property>
+            </bean>
+        </property>
+    </bean>
+    <!-- 安全管理器 -->
+    <bean id="securityManager"
+          class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm" />
+    </bean>
+<!--     shiro过滤器 -->
+<!--    <bean id="shiroFilter"-->
+<!--          class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
+<!--            &lt;!&ndash; 引用对应的安全管理器 &ndash;&gt;-->
+<!--            <property name="securityManager" ref="securityManager"/>-->
+<!--            &lt;!&ndash; 设置登录地址 &ndash;&gt;-->
+<!--            <property name="loginUrl" value="/"/>-->
+<!--            &lt;!&ndash; 设置登录成功后跳转地址 &ndash;&gt;-->
+<!--            <property name="successUrl" value="/admin/index"/>-->
+<!--            &lt;!&ndash; 设置未经授权跳转地址 &ndash;&gt;-->
+<!--            <property name="unauthorizedUrl" value="/403.jsp"/>-->
+<!--            &lt;!&ndash; 过滤器链配置 &ndash;&gt;-->
+<!--            <property name="filterChainDefinitions">-->
+<!--              <value>-->
+<!--             / = anon-->
+<!--               /user/login = anon-->
+<!--               /logout = logout-->
+<!--               /static/** = anon-->
+<!--               /** = authc-->
+<!--              </value>-->
+<!--            </property>-->
+<!--         </bean>-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/"/>
+        <property name="successUrl" value="/admin/index"/>
+        <property name="unauthorizedUrl" value="/403.jsp"/>
+        <property name="filterChainDefinitions">
+            <value>
+                / = anon
+                       /user/login = anon
+                       /logout = logout
+                       /static/** = anon
+                       /** = authc
+            </value>
+        </property>
+    </bean>
+</beans>
